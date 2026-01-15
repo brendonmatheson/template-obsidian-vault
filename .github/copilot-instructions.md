@@ -22,7 +22,7 @@ Module documentation should strictly represent the current state of the module a
 
 ## Tickets
 
-Tickets are stored in the tickets directory at the root of the main repository `./tickets/`
+Tickets are stored in the tickets directory at the root of the main repository `./_tickets/`
 
 Tickets are created from the template file
 ./_templates/Ticket.md and contain the following YAML front matter:
