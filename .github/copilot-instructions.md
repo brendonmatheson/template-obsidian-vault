@@ -10,9 +10,26 @@ There are two types of documentation:
 - Module documentation which represents the current state of the module
 - Tickets which represent a change that is proposed to be made
 
+## Product
+
+The overall product identity is defined in product.yaml located in the root directory.  This defines:
+- name - the unique name of the product to be used in artifact names and code namespaces
+- title - the human friendly name of the product to be used in user interfaces
+
+## Modules
+
+Each module is represented by a directory located in the root directory.  Each module directory contains the code and documentation for that module.
+
+Module directories are named using the following convention:
+`<product-name>-<module-name>`
+
+The `<product-name>` is the name defined in product.yaml.
+
+The `<module-name>` is a short, human friendly name for the module using only lowercase letters and hyphens and is defined in the module.yaml file located in the module directory.
+
 ## Module Documentation
 
-Module documentation is represented by a single Markdown file called README.md located in the root directory.
+Module documentation is represented by a single Markdown file called <module-title>.md (where <module-title> is the title defined in the module.yaml file located in the module directory) located in the root directory of the module directory.
 
 Module documentation should strictly represent the current state of the module and should never include any discussion of future enhancements because these should all be captured by tickets.  Sections such as the following should never be part of a module document:
 - Current Implementation Status
