@@ -2,36 +2,83 @@
 
 - Always confirm with the user before making any changes to the code or documentation.
 
-# Documentation
+# Structural Dimensions
 
-## Overview
+## Introduction
 
-There are two types of documentation:
-- Module documentation which represents the current state of the module
-- Tickets which represent a change that is proposed to be made
+We use the Org-Product-Module-Component model (OPMC) in this project.  For a deep dive on OPMC refer to: https://brendonmatheson.com/2019/10/18/modular-product-code-with-the-opmc-model.html
 
 ## Product
 
-The overall product identity is defined in product.yaml located in the root directory.  This defines:
-- name - the unique name of the product to be used in artifact names and code namespaces
-- title - the human friendly name of the product to be used in user interfaces
+The product is the overall system being built.  It is made up of multiple modules which each represent a distinct area of functionality within the product.
+
+The product identity is defined in the file product.yaml at the root which defines the symbol to be used in naming for artifacts for this product as well as the human friendly title.
 
 ## Modules
 
 Each module is represented by a directory located in the root directory.  Each module directory contains the code and documentation for that module.
 
 Module directories are named using the following convention:
-`<product-name>-<module-name>`
+`<product-symbol>-<module-symbol>`
 
-The `<product-name>` is the name defined in product.yaml.
+The `<product-symbol>` is the name defined in product.yaml.
 
-The `<module-name>` is a short, human friendly name for the module using only lowercase letters and hyphens and is defined in the module.yaml file located in the module directory.
+The `<module-symbol>` is a short, machine-friendly name for the module using only lowercase letters and is defined in the module.yaml file located in the module directory.
+
+# Documentation
+
+## Overview
+
+There are four types of documentation:
+- Product Vision Document which defines the long-term vision for the product including features that have not yet been built
+- Product documentation which documents the current product without overlapping with individual module documentation
+- Module documentation which represents the current state of the module
+- Tickets which represent a change that is proposed to be made
+
+## Product Vision Document
+
+The product vision document is stored in the root directory as `Vision.md` and defines the long-term vision for the product including features that have not yet been built.
+
+The product vision document should contain:
+- Long-term strategic goals and objectives
+- Future features and capabilities planned for the product
+- Product roadmap and timeline considerations
+- High-level architectural visions for future development
+
+## Product Documentation
+
+Product documentation documents the current state of the entire product without overlapping with the details given in individual module documentation. The product documentation file is stored at the root of the project and is named with the title from product.yaml suffixed with ".md" for markdown.
+
+For example, if product.yaml contains `title: Product Title`, the product documentation file would be named `Product Title.md`.
+
+Product documentation should contain:
+- High-level overview of the product's current capabilities and features
+- Integration points between different modules
+- User-facing functionality and workflows
+- Product architecture and data flow overview
+- System-level configuration and deployment information
+- Cross-cutting concerns like security, performance, and monitoring
+
+Product documentation should avoid:
+- Detailed implementation specifics of individual modules
+- Code-level documentation or API details that belong in module documentation
+- Future planning information that belongs in the Product Vision Document
+
+### Referencing Current vs Future State
+
+For understanding the **current state** of the product, refer to:
+- Product documentation (<product-title>.md) - Current product overview and capabilities
+- Module documentation - Current implementation state of each module
+
+For understanding the **future state** of the product, refer to:
+- Product Vision Document (Vision.md) - Long-term strategic vision and planned features
+- Tickets - Specific planned changes and implementation details
 
 ## Module Documentation
 
 Module documentation is represented by a single Markdown file called <module-title>.md (where <module-title> is the title defined in the module.yaml file located in the module directory) located in the root directory of the module directory.
 
-Module documentation should strictly represent the current state of the module and should never include any discussion of future enhancements because these should all be captured by tickets.  Sections such as the following should never be part of a module document:
+Module documentation should strictly represent the current state of the module and should never include any discussion of future enhancements because these should all be captured by tickets and the product vision document.  Sections such as the following should never be part of a module document:
 - Current Implementation Status
 - Completed Features
 - In Development
@@ -69,6 +116,8 @@ Valid values for `ticket_status` are:
 - `[[Ready]]`: The ticket is ready to be worked on.
 - `[[In Progress]]`: The ticket is currently being worked on.
 - `[[Done]]`: The ticket has been completed.
+- '[[Wont Fix]]': The ticket will not be worked on.  This can be interpreted as a vote against the change defined by the ticket.
+- '[[Duplicate]]': The ticket is a duplicate of another ticket.  This should not be interpreted as a vote against the change defined by the ticket.
 
 # Ticket Execution
 
@@ -93,3 +142,4 @@ After each tasks is completed, also update the documentation file for the affect
 ## Visual Studio Code
 
 The settings for Visual Studio Code are stored in the `.vscode` directory at the root of the main repository.
+
