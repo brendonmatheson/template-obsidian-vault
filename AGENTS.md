@@ -143,3 +143,61 @@ After each tasks is completed, also update the documentation file for the affect
 
 The settings for Visual Studio Code are stored in the `.vscode` directory at the root of the main repository.
 
+# Language-Specific Conventions
+
+## Terraform
+
+### Resource Naming
+
+Use an `instance_name` variable to generate unique resource names with a random suffix:
+- Resource Group: `${instance_name}-<module>-rg-${random_suffix}`
+- Container Registry: `${instance_name}acr${random_suffix}` (no hyphens, lowercase)
+- Container App: `${instance_name}-<module>-app`
+- API Management: `${instance_name}-<module>-apim`
+
+The `instance_name` should be defined in the first layer and read by subsequent layers via `terraform_remote_state`.
+
+### Location
+
+Default location is `swedencentral`. Location should be defined in the first layer and inherited by subsequent layers.
+
+## Cross-Layer State Sharing
+
+Use `terraform_remote_state` with local backend to share outputs between layers:
+
+```hcl
+data "terraform_remote_state" "rg" {
+  backend = "local"
+  config = {
+    path = "${path.module}/../01-rg/terraform.tfstate"
+  }
+}
+
+locals {
+  resource_group_name = data.terraform_remote_state.rg.outputs.resource_group_name
+  instance_name       = data.terraform_remote_state.rg.outputs.instance_name
+}
+```
+
+## Standard Tags
+
+All resources should include these tags:
+```hcl
+variable "tags" {
+  type = map(string)
+  default = {
+    product    = "<product-name>"
+    module     = "<module-name>"
+  }
+}
+```
+
+Add an `instance` tag dynamically from the `instance_name`:
+```hcl
+locals {
+  tags = merge(var.tags, {
+    instance_name = local.instance_name
+  })
+}
+```
+
